@@ -13,7 +13,7 @@ class BlogResource extends JsonResource
             'id'           => $this->id,
             'title'        => $this->title,
             'slug'         => $this->slug,
-            'image_url'    => $this->image ? asset('storage/' . $this->image) : null,
+            'image'    => $this->image ? asset('storage/' . $this->image) : null,
             'excerpt'      => $this->excerpt,
             'content'      => $this->content,
             'published_at' => $this->created_at->toDateString(),
