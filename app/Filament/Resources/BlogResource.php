@@ -25,6 +25,12 @@ class BlogResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')   // ← use 'image'
+                    ->disk('public')
+                    ->directory('blog-images')
+                    ->visibility('public')
+                    ->image()
+                    ->preserveFilenames(),
 
                 Forms\Components\Textarea::make('excerpt')
                     ->required(),
@@ -32,12 +38,6 @@ class BlogResource extends Resource
                 Forms\Components\RichEditor::make('content')
                     ->required(),
 
-                Forms\Components\FileUpload::make('image')   // ← use 'image'
-                    ->disk('public')
-                    ->directory('blog-images')
-                    ->visibility('public')
-                    ->image()
-                    ->preserveFilenames(),
             ]);
     }
 
@@ -45,9 +45,8 @@ class BlogResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_url')
-                    ->label('Image')
-                    ->rounded(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Image'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
