@@ -3,27 +3,39 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BlogResource;
 use App\Models\Blog;
 use Illuminate\Http\JsonResponse;
 
 class BlogController extends Controller
 {
-    /**
-     * Return all blog posts as a resource collection.
-     */
     public function index(): JsonResponse
     {
-        $posts = Blog::latest()->get();
-        return response()->json(BlogResource::collection($posts)->resolve());
+        $blogs = Blog::latest()
+            ->get()
+            ->map(fn (Blog $b) => [
+                'id'           => $b->id,
+                'title'        => $b->title,
+                'slug'         => $b->slug,
+                'excerpt'      => $b->excerpt,
+                'image_url'    => $b->image_url,
+                'published_at' => $b->created_at->toDateString(),
+            ]);
+
+        return response()->json($blogs);
     }
 
-    /**
-     * Return a single blog post by slug.
-     */
-    public function show(string $slug): BlogResource
+    public function show(string $slug): JsonResponse
     {
-        $post = Blog::where('slug', $slug)->firstOrFail();
-        return new BlogResource($post);
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+
+        return response()->json([
+            'id'           => $blog->id,
+            'title'        => $blog->title,
+            'slug'         => $blog->slug,
+            'excerpt'      => $blog->excerpt,
+            'content'      => $blog->content,
+            'image_url'    => $blog->image_url,
+            'published_at' => $blog->created_at->toDateString(),
+        ]);
     }
 }
