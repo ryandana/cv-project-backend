@@ -1,17 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\BlogController;
+use App\Models\Blog;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-*/
+Route::get('/blogs/{slug}', function ($slug) {
+    $blog = Blog::where('slug', $slug)->first();
 
-// 1️⃣ Quick test endpoint
-Route::get('/ping', fn() => response()->json(['pong' => true]));
+    if (! $blog) {
+        return response()->json(['message' => 'Not found'], 404);
+    }
 
-// 2️⃣ Blog endpoints
-Route::get('/blogs',  [BlogController::class, 'index']);
-Route::get('/blogs/{slug}', [BlogController::class, 'show']);
+    return response()->json([
+        'title'       => $blog->title,
+        'slug'        => $blog->slug,
+        'excerpt'     => $blog->excerpt,
+        'content'     => $blog->content,
+        'image_url'   => $blog->image_url, // uses accessor
+        'published_at'=> $blog->created_at->format('F j, Y'),
+    ]);
+});
