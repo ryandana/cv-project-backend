@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers\Filament;
-
+use Illuminate\Support\Facades\URL;
+use Livewire\Livewire;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
