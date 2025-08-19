@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Providers\Filament;
-use Illuminate\Support\Facades\URL;
-use Livewire\Livewire;
+
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,10 +22,6 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        if (config('app.env') === 'production') {
-        URL::forceScheme('https');
-        Livewire::setAssetUrl(config('app.url')); // Forces upload endpoints to use https://
-    }
         return $panel
             ->default()
             ->id('admin')
