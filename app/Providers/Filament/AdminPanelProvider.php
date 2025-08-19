@@ -53,6 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->access(fn (\App\Models\User $user) => true); // 👈 allow all logged-in users
     }
 }
