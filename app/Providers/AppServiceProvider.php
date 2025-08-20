@@ -16,27 +16,8 @@ class AppServiceProvider extends ServiceProvider
 
 public function boot()
 {
-    if (App::environment('production')) {
-        // Trust the proxy headers that Railway sets
-        request()->setTrustedProxies(
-            ['*'],
-            Request::HEADER_X_FORWARDED_FOR
-            | Request::HEADER_X_FORWARDED_HOST
-            | Request::HEADER_X_FORWARDED_PROTO
-            | Request::HEADER_X_FORWARDED_PORT
-        );
-        
-        // Force all generated URLs to use https
+    if (config('app.env') === 'production') {
         URL::forceScheme('https');
-        URL::forceRootUrl('https://cv-project-backend-production.up.railway.app');
-        
-        // Fix session configuration for Railway
-        config([
-            'app.url' => 'https://cv-project-backend-production.up.railway.app',
-            'session.secure' => true,
-            'session.same_site' => 'lax',
-            'session.domain' => null,
-        ]);
     }
 }
 }
