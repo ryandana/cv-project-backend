@@ -31,6 +31,9 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Admin Panel')
             ->homeUrl('/admin')
             ->loginRouteSlug('login')
+            ->passwordReset()
+            ->emailVerification()
+            ->profile()
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -55,8 +58,6 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                // Add Livewire middleware
-                \Livewire\Mechanisms\HandleRequests\HandleRequests::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
