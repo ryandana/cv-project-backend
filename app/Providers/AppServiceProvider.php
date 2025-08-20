@@ -14,10 +14,6 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    // In app/Providers/AppServiceProvider.php
 public function boot()
 {
     if (App::environment('production')) {
@@ -29,11 +25,14 @@ public function boot()
             | Request::HEADER_X_FORWARDED_PROTO
             | Request::HEADER_X_FORWARDED_PORT
         );
+        
         // Force all generated URLs to use https
         URL::forceScheme('https');
+        URL::forceRootUrl('https://cv-project-backend-production.up.railway.app');
         
-        // Fix for Railway session persistence
+        // Fix session configuration for Railway
         config([
+            'app.url' => 'https://cv-project-backend-production.up.railway.app',
             'session.secure' => true,
             'session.same_site' => 'lax',
             'session.domain' => null,
