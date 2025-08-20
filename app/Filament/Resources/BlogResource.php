@@ -25,12 +25,26 @@ class BlogResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\FileUpload::make('image')   // ← use 'image'
+                Forms\Components\FileUpload::make('image')
+                    ->label('Blog Image')
                     ->disk('public')
                     ->directory('blog-images')
                     ->visibility('public')
                     ->image()
-                    ->preserveFilenames(),
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'])
+                    ->downloadable()
+                    ->openable()
+                    ->deletable()
+                    ->previewable()
+                    ->helperText('Maximum file size: 2MB. Supported formats: JPG, PNG, GIF, WebP')
+                    ->columnSpanFull(),
 
                 Forms\Components\Textarea::make('excerpt')
                     ->required(),
