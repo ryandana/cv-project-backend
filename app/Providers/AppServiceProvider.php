@@ -17,7 +17,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       if (config('app.env') === 'production') {
+        if (App::environment('production')) {
+        // Trust the proxy headers that Railway sets
+        request()->setTrustedProxies(
+            ['*'],
+            \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL
+        );
+
+        // Force all generated URLs to use https
         URL::forceScheme('https');
         }
     }
