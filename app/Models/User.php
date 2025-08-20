@@ -18,6 +18,10 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Allow all authenticated users to access Filament panels.
      */
+     public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
 
     /**
      * The attributes that are mass assignable.
