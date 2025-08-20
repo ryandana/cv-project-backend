@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\App;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,10 +22,12 @@ class AppServiceProvider extends ServiceProvider
         if (App::environment('production')) {
         // Trust the proxy headers that Railway sets
         request()->setTrustedProxies(
-            ['*'],
-            \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL
-        );
-
+        ['*'],
+        Request::HEADER_X_FORWARDED_FOR
+        | Request::HEADER_X_FORWARDED_HOST
+        | Request::HEADER_X_FORWARDED_PROTO
+        | Request::HEADER_X_FORWARDED_PORT
+    );
         // Force all generated URLs to use https
         URL::forceScheme('https');
         }
